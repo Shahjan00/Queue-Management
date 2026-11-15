@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rugas Queue Counter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=IBM+Plex+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<!-- ============ LOGIN ============ -->
+<div id="login-screen" class="login-wrap">
+  <div class="ticket login-ticket">
+    <div class="ticket-stub">RUGAS</div>
+    <h1>Queue Counter</h1>
+    <p class="login-sub">Manager sign in to run the counter.</p>
+    <form id="login-form">
+      <label>USERNAME</label>
+      <input id="login-user" type="text" value="manager" autocomplete="username">
+      <label>PASSWORD</label>
+      <input id="login-pass" type="password" placeholder="••••••••" autocomplete="current-password">
+      <p id="login-error" class="error hidden"></p>
+      <button type="submit" class="btn btn-red btn-block">OPEN COUNTER →</button>
+    </form>
+    <p class="login-hint">Demo manager: <b>manager</b> / <b>rugas123</b></p>
+  </div>
+</div>
+
+<!-- ============ APP ============ -->
+<div id="app" class="hidden">
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">R</span>
+      <div>
+        <div class="brand-name">RUGAS QUEUE COUNTER</div>
+        <div class="brand-sub">Full Stack · Token System</div>
+      </div>
+    </div>
+    <div class="top-right">
+      <div class="clock"><span id="clock">--:--:--</span><small>LOCAL TIME</small></div>
+      <button id="logout-btn" class="btn btn-ghost">LOG OUT</button>
+    </div>
+  </header>
+
+  <!-- NOW SERVING BOARD -->
+  <section class="board">
+    <div class="board-label">NOW SERVING</div>
+    <div id="serving-board" class="board-tokens"><span class="board-empty">Nobody at the counter yet. Call the next token.</span></div>
+  </section>
+
+  <main class="layout">
+    <!-- QUEUES -->
+    <aside class="panel queues-panel">
+      <h2>QUEUES</h2>
+      <form id="new-queue-form" class="row-form">
+        <input id="new-queue-name" type="text" placeholder="New queue…" maxlength="24">
+        <button type="submit" class="btn btn-black">+ ADD</button>
+      </form>
+      <div id="queue-list" class="queue-list"></div>
+      <p class="panel-note">Pick a queue to run it. Each queue issues its own token series.</p>
+    </aside>
+
+    <!-- ACTIVE QUEUE -->
+    <section class="panel queue-panel">
+      <div class="queue-head">
+        <div>
+          <h2 id="active-queue-name">—</h2>
+          <p id="active-queue-meta" class="meta">—</p>
+        </div>
+        <button id="call-next-btn" class="btn btn-red btn-big">CALL NEXT →</button>
+      </div>
+      <div id="ticket-list" class="ticket-list"></div>
+      <form id="add-token-form" class="row-form add-person">
+        <input id="person-name" type="text" placeholder="Person name…" maxlength="40">
+        <button type="submit" class="btn btn-black">+ GIVE TOKEN</button>
+      </form>
+    </section>
+
+    <!-- DASHBOARD -->
+    <aside class="panel dash-panel">
+      <h2>DASHBOARD</h2>
+      <div class="stat-grid">
+        <div class="stat"><span class="stat-num" id="stat-waiting">0</span><span class="stat-label">WAITING</span></div>
+        <div class="stat"><span class="stat-num" id="stat-serving">0</span><span class="stat-label">SERVING</span></div>
+        <div class="stat"><span class="stat-num" id="stat-served">0</span><span class="stat-label">SERVED</span></div>
+        <div class="stat"><span class="stat-num" id="stat-avg">0m</span><span class="stat-label">AVG WAIT</span></div>
+      </div>
+      <div id="longest-wait" class="longest"></div>
+      <h3>PER QUEUE</h3>
+      <div id="per-queue" class="per-queue"></div>
+      <h3>TOKENS PER HOUR</h3>
+      <div id="trend" class="trend"></div>
+      <p class="panel-note">Wait time counts from token issue to being called.</p>
+    </aside>
+  </main>
+
+  <footer class="foot">RUGAS TECHNOLOGIES · QUEUE MANAGEMENT · BUILT WITH FASTAPI + SQLITE</footer>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+<script src="/static/app.js"></script>
+</body>
+</html>
