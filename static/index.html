@@ -1,17 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rugas Queue Counter</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=IBM+Plex+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/static/style.css">
+<script>
+  // Apply saved theme before paint to avoid a flash
+  (function () {
+    var t = "dark";
+    try { t = localStorage.getItem("rugas_theme") || "dark"; } catch (e) {}
+    document.documentElement.setAttribute("data-theme", t);
+  })();
+</script>
 </head>
 <body>
 
+<!-- Reusable icons (theme toggle) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></g></symbol>
+</svg>
+
 <!-- ============ LOGIN ============ -->
 <div id="login-screen" class="login-wrap">
+  <button type="button" class="theme-toggle login-theme" aria-label="Switch light/dark theme" title="Switch theme">
+    <svg class="icon-moon"><use href="#i-moon"/></svg>
+    <svg class="icon-sun"><use href="#i-sun"/></svg>
+  </button>
   <div class="ticket login-ticket">
     <div class="ticket-stub">RUGAS</div>
     <h1>Queue Counter</h1>
@@ -40,6 +59,10 @@
     </div>
     <div class="top-right">
       <div class="clock"><span id="clock">--:--:--</span><small>LOCAL TIME</small></div>
+      <button type="button" class="theme-toggle" aria-label="Switch light/dark theme" title="Switch theme">
+        <svg class="icon-moon"><use href="#i-moon"/></svg>
+        <svg class="icon-sun"><use href="#i-sun"/></svg>
+      </button>
       <button id="logout-btn" class="btn btn-ghost">LOG OUT</button>
     </div>
   </header>
@@ -100,6 +123,16 @@
 </div>
 
 <div id="toast" class="toast hidden"></div>
+
+<script>
+  // Theme switch (UI only — remembered in localStorage)
+  document.addEventListener("click", function (e) {
+    if (!e.target.closest(".theme-toggle")) return;
+    var next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    try { localStorage.setItem("rugas_theme", next); } catch (err) {}
+  });
+</script>
 <script src="/static/app.js"></script>
 </body>
 </html>
